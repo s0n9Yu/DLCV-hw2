@@ -35,12 +35,13 @@ test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_fn=c
 
 epochs = 5
 lr = 0.001
+weight_decay = 0.0005
 device = "cuda"
 model = MyModel().to(device)
 optimizer = Adam(
             model.parameters(),
             lr=lr,
-            weight_decay=0.0005
+            weight_decay=weight_decay
             )
 
 if useWandb:
@@ -53,6 +54,7 @@ if useWandb:
             "learning_rate": lr,
             "epochs": epochs,
             "model": str(model),
+            "weight decay": weight_decay
         },
         notes="no normalization",
     )

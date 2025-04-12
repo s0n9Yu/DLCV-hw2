@@ -20,7 +20,7 @@ args = parser.parse_args()
 
 train_transform = transforms.Compose([
     transforms.ToTensor(),
-    transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    #transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
 ])
 test_dataset = MyDataset("data", split="test", transform=train_transform)
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_fn=collate_fn)
