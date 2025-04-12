@@ -1,0 +1,8 @@
+checkpoint/*
+*/__pycache__
+data/
+wandb/
+*.zip
+img.jpg
+*.csv
+*.json
