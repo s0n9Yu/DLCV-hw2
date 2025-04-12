@@ -35,7 +35,7 @@ test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_fn=c
 
 epochs = 5
 lr = 0.001
-weight_decay = 0.0005
+weight_decay = 0
 device = "cuda"
 model = MyModel().to(device)
 optimizer = Adam(
@@ -56,7 +56,7 @@ if useWandb:
             "model": str(model),
             "weight decay": weight_decay
         },
-        notes="no normalization",
+        notes="resnet101",
     )
     model_name = wandb.run.name
 else:
