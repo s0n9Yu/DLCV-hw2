@@ -24,8 +24,8 @@ class MyModel(nn.Module):
         #backbone = resnet_fpn_backbone('resnet101', weights='DEFAULT')
         # Load pretrained ResNet-101
         backbone = resnet_fpn_backbone(
-            backbone_name="resnet101",
-            weights=torchvision.models.ResNet101_Weights.DEFAULT
+            backbone_name="resnet152",
+            weights=torchvision.models.ResNet152_Weights.DEFAULT
         )
 
         # Output channels from resnet101's last conv layer
