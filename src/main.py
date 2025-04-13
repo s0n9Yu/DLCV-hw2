@@ -33,8 +33,8 @@ train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=
 valid_loader = DataLoader(valid_dataset, batch_size=4, shuffle=False, collate_fn=collate_fn)
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False, collate_fn=collate_fn)
 
-epochs = 5
-lr = 0.001
+epochs = 20
+lr = 0.0001
 weight_decay = 0
 device = "cuda"
 model = MyModel().to(device)

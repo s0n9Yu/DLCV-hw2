@@ -23,10 +23,10 @@ class MyModel(nn.Module):
         # ResNet-101 backbone with pretrained weights
         #backbone = resnet_fpn_backbone('resnet101', weights='DEFAULT')
         # Load pretrained ResNet-101
-        backbone = resnext50_32x4d(weights="DEFAULT")
-        # Remove avgpool and fc layers
-        backbone = torch.nn.Sequential(*(list(backbone.children())[:-2]))
-        backbone.out_channels = 2048
+        backbone = resnet_fpn_backbone(
+            backbone_name="resnet101",
+            weights=torchvision.models.ResNet101_Weights.DEFAULT
+        )
 
         # Output channels from resnet101's last conv layer
 
@@ -37,8 +37,8 @@ class MyModel(nn.Module):
         pretrained_model = torchvision.models.detection.fasterrcnn_resnet50_fpn(weights='DEFAULT')
 
         # Copy RPN and ROI head weights (optional, partial weight transfer)
-        #self.model.rpn.load_state_dict(pretrained_model.rpn.state_dict())
-        #self.model.roi_heads.box_head.load_state_dict(pretrained_model.roi_heads.box_head.state_dict())
+        self.model.rpn.load_state_dict(pretrained_model.rpn.state_dict())
+        self.model.roi_heads.box_head.load_state_dict(pretrained_model.roi_heads.box_head.state_dict())
 
         # Replace the final predictor with one that matches your num_classes
         in_features = self.model.roi_heads.box_predictor.cls_score.in_features
