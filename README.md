@@ -12,7 +12,8 @@ In this homework, the task is to detect the digits in some outdoor images of doo
 ### Dataset
 ```
 gdown 13JXJ_hIdcloC63sS-vF3wFQLsUP1sMz5
-tar -xzf hw2-data.tar.gz data
+tar -xzf nycu-hw2-data.tar.gz
+mv nycu-hw2-data data
 ```
 
 ### Run Container
