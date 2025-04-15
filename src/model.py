@@ -1,8 +1,6 @@
-import torch
 import torchvision
 from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchvision.models.detection.backbone_utils import resnet_fpn_backbone
-from torchvision.models import resnext50_32x4d
 from torchvision.models.detection import FasterRCNN
 
 import torch.nn as nn
@@ -13,16 +11,7 @@ class MyModel(nn.Module):
         super(MyModel, self).__init__()
 
         self.num_classes = num_classes
-        #self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained = True)
-        #backbone = resnet_fpn_backbone('resnet101', weights='DEFAULT')
-        #self.model = FasterRCNN(backbone=backbone, num_classes=num_classes)
-
-        #in_features = self.model.roi_heads.box_predictor.cls_score.in_features
-
-        #self.model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes=self.num_classes)
-        # ResNet-101 backbone with pretrained weights
-        #backbone = resnet_fpn_backbone('resnet101', weights='DEFAULT')
-        # Load pretrained ResNet-101
+        # Load pretrained ResNet-152
         backbone = resnet_fpn_backbone(
             backbone_name="resnet152",
             weights=torchvision.models.ResNet152_Weights.DEFAULT
@@ -31,21 +20,26 @@ class MyModel(nn.Module):
         # Output channels from resnet101's last conv layer
 
         # Create Faster R-CNN model with this backbone
-        self.model = FasterRCNN(backbone=backbone, num_classes=self.num_classes)  
+        self.model = FasterRCNN(backbone=backbone,
+                                num_classes=self.num_classes)
 
         # Load pretrained weights from ResNet-50 model
-        pretrained_model = torchvision.models.detection.fasterrcnn_resnet50_fpn(weights='DEFAULT')
+        pretrained_model = torchvision.models. \
+            detection.fasterrcnn_resnet50_fpn(weights='DEFAULT')
 
         # Copy RPN and ROI head weights (optional, partial weight transfer)
         self.model.rpn.load_state_dict(pretrained_model.rpn.state_dict())
-        self.model.roi_heads.box_head.load_state_dict(pretrained_model.roi_heads.box_head.state_dict())
+        self.model.roi_heads.box_head.\
+            load_state_dict(pretrained_model.roi_heads.box_head.state_dict())
 
         # Replace the final predictor with one that matches your num_classes
         in_features = self.model.roi_heads.box_predictor.cls_score.in_features
-        self.model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
+        self.model.roi_heads.box_predictor = \
+            FastRCNNPredictor(in_features, num_classes)
 
     def forward(self, images, targets=None):
         return self.model(images, targets)
+
     @staticmethod
     def convert_targets(boxes, labels, image_ids=None):
         targets = []
